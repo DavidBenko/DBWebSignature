@@ -26,12 +26,12 @@
     return [self encodePayload:payload withSecret:theSecret algorithm:theAlgorithm];
 }
 
-+ (NSString *)encodePayload:(NSDictionary *)thePayload withSecret:(NSString *)theSecret;
++ (NSString *)encodePayload:(id)thePayload withSecret:(NSString *)theSecret;
 {
     return [self encodePayload:thePayload withSecret:theSecret algorithm:[[JWTAlgorithmHS512 alloc] init]];
 }
 
-+ (NSString *)encodePayload:(NSDictionary *)thePayload withSecret:(NSString *)theSecret algorithm:(id<JWTAlgorithm>)theAlgorithm;
++ (NSString *)encodePayload:(id)thePayload withSecret:(NSString *)theSecret algorithm:(id<JWTAlgorithm>)theAlgorithm;
 {
     NSDictionary *header = @{@"typ": @"JWT", @"alg": theAlgorithm.name};
     
