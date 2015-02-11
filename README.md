@@ -4,7 +4,7 @@ JWT/JWS for iOS. Creates and Validates signatures for JSON Objects.
 
 [JSON Web Token]: http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html
 
-Thanks to [yourkarma](https://github.com/yourkarma/JWT) for the original implementation. Unfortunatley, I found this version did not adhere correctly to the spec document, and also had unnecessary dependencies, this version should adhere to the spec and provide an easier interface for creating and validating JWT/JWS.
+Thanks to [yourkarma](https://github.com/yourkarma/JWT) for the original implementation. Unfortunately, I found this version did not adhere correctly to the spec document, and also had unnecessary dependencies, this version should adhere to the spec and provide an easier interface for creating and validating JWT/JWS.
 
 # Installation
 
