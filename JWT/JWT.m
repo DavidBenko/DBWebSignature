@@ -16,31 +16,20 @@
 
 @implementation JWT
 
-+ (NSString *)encodeClaimsSet:(JWTClaimsSet *)theClaimsSet withSecret:(NSString *)theSecret;
-{
-    return [self encodeClaimsSet:theClaimsSet withSecret:theSecret algorithm:[[JWTAlgorithmHS512 alloc] init]];
++ (NSString *)encodeClaimsSet:(JWTClaimsSet *)claimsSet secret:(NSString *)secret algorithm:(id<JWTAlgorithm>)algorithm {
+    NSDictionary *payload = [JWTClaimsSetSerializer dictionaryWithClaimsSet:claimsSet];
+    return [self encodePayload:payload secret:secret algorithm:algorithm];
 }
 
-+ (NSString *)encodeClaimsSet:(JWTClaimsSet *)theClaimsSet withSecret:(NSString *)theSecret algorithm:(id<JWTAlgorithm>)theAlgorithm;
++ (NSString *)encodePayload:(id)payload secret:(NSString *)secret algorithm:(id<JWTAlgorithm>)algorithm
 {
-    NSDictionary *payload = [JWTClaimsSetSerializer dictionaryWithClaimsSet:theClaimsSet];
-    return [self encodePayload:payload withSecret:theSecret algorithm:theAlgorithm];
-}
-
-+ (NSString *)encodePayload:(id)thePayload withSecret:(NSString *)theSecret;
-{
-    return [self encodePayload:thePayload withSecret:theSecret algorithm:[[JWTAlgorithmHS512 alloc] init]];
-}
-
-+ (NSString *)encodePayload:(id)thePayload withSecret:(NSString *)theSecret algorithm:(id<JWTAlgorithm>)theAlgorithm;
-{
-    NSDictionary *header = @{@"typ": @"JWT", @"alg": theAlgorithm.name};
+    NSDictionary *header = @{@"typ": @"JWT", @"alg": algorithm.name};
     
     NSString *headerSegment = [self encodeSegment:header];
-    NSString *payloadSegment = [self encodeSegment:thePayload];
+    NSString *payloadSegment = [self encodeSegment:payload];
     
     NSString *signingInput = [@[headerSegment, payloadSegment] componentsJoinedByString:@"."];
-    NSString *signedOutput = [[theAlgorithm encodePayload:signingInput withSecret:theSecret] base64UrlEncodedString];
+    NSString *signedOutput = [[algorithm encodePayload:signingInput withSecret:secret] base64UrlEncodedString];
     return [@[headerSegment, payloadSegment, signedOutput] componentsJoinedByString:@"."];
 }
 

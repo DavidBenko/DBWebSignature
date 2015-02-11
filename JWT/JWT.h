@@ -13,10 +13,7 @@
 
 @interface JWT : NSObject
 
-+ (NSString *)encodeClaimsSet:(JWTClaimsSet *)theClaimsSet withSecret:(NSString *)theSecret;
-+ (NSString *)encodeClaimsSet:(JWTClaimsSet *)theClaimsSet withSecret:(NSString *)theSecret algorithm:(id<JWTAlgorithm>)theAlgorithm;
-
-+ (NSString *)encodePayload:(id)thePayload withSecret:(NSString *)theSecret;
-+ (NSString *)encodePayload:(id)thePayload withSecret:(NSString *)theSecret algorithm:(id<JWTAlgorithm>)theAlgorithm;
++ (NSString *)encodeClaimsSet:(JWTClaimsSet *)claimsSet secret:(NSString *)secret algorithm:(id<JWTAlgorithm>)algorithm;
++ (NSString *)encodePayload:(id)payload secret:(NSString *)secret algorithm:(id<JWTAlgorithm>)algorithm;
 
 @end
