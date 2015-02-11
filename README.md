@@ -1,14 +1,16 @@
-# JWT
+# JSON Web Token (JWT) / JSON Web Signature (JWS) 
 
-A [JSON Web Token][] implementation in Objective-C.
+JWT/JWS for iOS. Creates and Validates signatures for JSON Objects.
 
 [JSON Web Token]: http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html
+
+Thanks to [yourkarma](https://github.com/yourkarma/JWT) for the original implementation. Unfortunatley, I found this version did not adhere correctly to the spec document, and also had unnecessary dependencies, this version should adhere to the spec and provide an easier interface for creating and validating JWT/JWS.
 
 # Installation
 
 Add the following to your [Cocoapods][] Podfile:
 
-    pod 'JWT', git: 'https://github.com/yourkarma/JWT.git', tag: '1.0.0'
+    pod 'JWT', git: 'https://github.com/DavidBenko/JWT.git', tag: '1.0.0'
 
 [Cocoapods]: http://cocoapods.org
 
@@ -33,12 +35,8 @@ If you're using reserved claim names you can encode your claim set like so (all 
 
 # Algorithms
 
-The library currently only supports HS512 - HMAC using SHA-512. Additional algorithms can be added by implementing the `KWTAlgorithm` protocol.
+### Supported Algorithms
+- HS512 (HMAC, SHA-512)
+- HS256 (HMAC, SHA-256)
 
-# Contributing
-
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+Additional algorithms can be added by implementing the `KWTAlgorithm` protocol.
