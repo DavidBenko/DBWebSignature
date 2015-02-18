@@ -10,4 +10,5 @@
 
 @interface NSString (JWT)
 - (NSString *)base64UrlEncodedString;
+- (NSString *)base64UrlDecodedString;
 @end

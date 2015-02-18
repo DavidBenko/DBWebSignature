@@ -18,4 +18,18 @@
     
     return base64String;
 }
+
+- (NSString *)base64UrlDecodedString {
+    NSString *decodedString = self;
+    decodedString = [decodedString stringByReplacingOccurrencesOfString:@"-" withString:@"+"];
+    decodedString = [decodedString stringByReplacingOccurrencesOfString:@"_" withString:@"/"];
+    
+    while (decodedString.length % 4 != 0) {
+        decodedString = [decodedString stringByAppendingString:@"="];
+    }
+    
+    decodedString = [[NSString alloc]initWithData:[[NSData alloc]initWithBase64EncodedString:decodedString options:0] encoding:NSUTF8StringEncoding];
+    
+    return decodedString;
+}
 @end
