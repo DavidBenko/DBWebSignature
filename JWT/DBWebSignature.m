@@ -27,6 +27,8 @@ static NSString * const delimiter = @".";
 
 - (instancetype)initWithSecret:(NSString *)secret algorithm:(id<JWTAlgorithm>)algorithm {
     
+    NSParameterAssert(secret && algorithm);
+    
     if (self = [super init]) {
         self.secret = secret;
         self.algorithm = algorithm;
@@ -39,6 +41,13 @@ static NSString * const delimiter = @".";
 #pragma mark - Token Generation
 
 - (NSString *)encodeSegment:(id)theSegment {
+    
+    // Strings are not JSON
+    if ([theSegment isKindOfClass:[NSString class]]) {
+        return [theSegment base64UrlEncodedString];
+    }
+    
+    
     NSError *error;
     NSString *encodedSegment = [[NSJSONSerialization dataWithJSONObject:theSegment options:0 error:&error] base64UrlEncodedString];
     
@@ -59,9 +68,38 @@ static NSString * const delimiter = @".";
 
 #pragma mark - Token Validation
 
+- (BOOL) embeddedPayloadMatchesSignature:(NSString *)token{
+    return [[self generateToken:[self embeddedPayloadAsString:token]] isEqualToString:token];
+}
+
+- (NSString *)embeddedPayloadAsString:(NSString *)token {
+    NSArray *components = [token componentsSeparatedByString:@"."];
+    if (components.count != 3) {
+        NSLog(@"Error: invalid token");
+        return nil;
+    }
+    
+    return [[components objectAtIndex:1] base64UrlDecodedString];
+}
+
+- (id) embeddedPayloadAsJSONObject:(NSString *)token {
+    NSError *jsonError;
+    NSData *payloadData = [[self embeddedPayloadAsString:token] dataUsingEncoding:NSUTF8StringEncoding];
+    id json = [NSJSONSerialization JSONObjectWithData:payloadData
+                                              options:0
+                                                error:&jsonError];
+    
+    if (jsonError) {
+        NSLog(@"JSON Error: %@", [jsonError localizedDescription]);
+        return nil;
+    }
+    
+    return json;
+}
+
+
 - (BOOL)validateToken:(NSString *)token payload:(id)payload{
-    NSString *generatedToken = [self generateToken:payload];
-    return [token isEqualToString:generatedToken];
+    return [[self embeddedPayloadAsJSONObject:token] isEqual:payload] && [self embeddedPayloadMatchesSignature:token];
 }
 
 #pragma mark - Claim Set Encoding

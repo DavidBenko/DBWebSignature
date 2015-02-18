@@ -25,7 +25,7 @@
 /**
  * Generates a new token from a JSON object
  *
- * @param payload the JSON object to generate a token with. Can be NSArray or NSDictionary.
+ * @param payload the JSON object to generate a token with. Can be NSArray, NSDictionary, or NSString.
  * @return the token
  */
 - (NSString *)generateToken:(id)payload;
