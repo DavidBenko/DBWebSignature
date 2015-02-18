@@ -73,7 +73,7 @@ static NSString * const delimiter = @".";
 }
 
 - (NSString *)embeddedPayloadAsString:(NSString *)token {
-    NSArray *components = [token componentsSeparatedByString:@"."];
+    NSArray *components = [token componentsSeparatedByString:delimiter];
     if (components.count != 3) {
         NSLog(@"Error: invalid token");
         return nil;
